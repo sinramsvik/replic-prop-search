@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <main className='min-h-screen px-4 py-8 md:px-8'>
       <div className='max-w-7xl mx-auto'>
-        <h1 className='text-4xl mb-8'>Boligprisestimat POC</h1>
+        <h1 className='text-4xl mb-8 text-center'>Boligprisestimat POC</h1>
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6'>
           <LinkCard
