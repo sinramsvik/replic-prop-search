@@ -30,17 +30,17 @@ export default function Home() {
           <LinkCard
             href='/map'
             title='Søk enkeltadresse'
-            description='Finn informasjon om en spesifikk adresse'
+            description='Verdiestimat og solgtpris på enkeltadresse'
           />
           <LinkCard
             href='/map'
-            title='Søk område'
-            description='Utforsk boliger i et bestemt område'
+            title='Søk enkeltadresse - (coming soon)'
+            description='Alternativ layout med større mulighet for upsell'
           />
           <LinkCard
             href='/map'
-            title='Søk postnummer'
-            description='Se boliger basert på postnummer'
+            title='Browse boligpriser - (coming soon)'
+            description='Se boligpriser i et område'
           />
         </div>
       </div>
