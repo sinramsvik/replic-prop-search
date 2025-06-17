@@ -1,19 +1,48 @@
 // app/components/map-style-dropdown.tsx
 "use client";
 
-import { Map, ChevronDown } from "lucide-react";
+import { Map, ChevronDown, Check } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { MAP_STYLES } from "@/hooks/useMapbox";
+
+const MenuItem = ({
+  label,
+  value,
+  onClick,
+  activeStyle,
+}: {
+  label: string;
+  value: keyof typeof MAP_STYLES;
+  onClick: () => void;
+  activeStyle: string;
+}) => {
+  return (
+    <DropdownMenuItem
+      onClick={onClick}
+      className='flex items-center justify-between'
+    >
+      <span>{label}</span>
+
+      {MAP_STYLES[value] === activeStyle && <Check className='h-4 w-4' />}
+    </DropdownMenuItem>
+  );
+};
 
 interface MapStyleDropdownProps {
   onStyleChange: (style: "default" | "satellite" | "light" | "dark") => void;
+  activeStyle: "default" | "satellite" | "light" | "dark";
 }
 
-export function MapStyleDropdown({ onStyleChange }: MapStyleDropdownProps) {
+export function MapStyleDropdown({
+  onStyleChange,
+  activeStyle,
+}: MapStyleDropdownProps) {
+  console.log(activeStyle);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,18 +52,30 @@ export function MapStyleDropdown({ onStyleChange }: MapStyleDropdownProps) {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-40'>
-        <DropdownMenuItem onClick={() => onStyleChange("default")}>
-          Standard
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onStyleChange("satellite")}>
-          Satellitt
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onStyleChange("light")}>
-          Lys
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onStyleChange("dark")}>
-          Mørk
-        </DropdownMenuItem>
+        <MenuItem
+          label='Standard'
+          value='default'
+          onClick={() => onStyleChange("default")}
+          activeStyle={activeStyle}
+        />
+        <MenuItem
+          label='Satellitt'
+          value='satellite'
+          onClick={() => onStyleChange("satellite")}
+          activeStyle={activeStyle}
+        />
+        <MenuItem
+          label='Lys'
+          value='light'
+          onClick={() => onStyleChange("light")}
+          activeStyle={activeStyle}
+        />
+        <MenuItem
+          label='Mørk'
+          value='dark'
+          onClick={() => onStyleChange("dark")}
+          activeStyle={activeStyle}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

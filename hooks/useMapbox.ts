@@ -4,18 +4,18 @@ import { MapState, SearchResult } from "@/types";
 import { searchAddresses } from "@/app/map/actions";
 import { searchHjemlaAddress, getPropertyEstimate } from "@/app/map/actions";
 
+export const MAP_STYLES = {
+  default: "mapbox://styles/mapbox/streets-v12",
+  satellite: "mapbox://styles/mapbox/satellite-streets-v12",
+  light: "mapbox://styles/mapbox/light-v11",
+  dark: "mapbox://styles/mapbox/dark-v11",
+} as const;
+
 export function useMapbox() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const marker = useRef<mapboxgl.Marker | null>(null);
   const propertyCardRef = useRef<HTMLDivElement>(null);
-
-  const MAP_STYLES = {
-    default: "mapbox://styles/mapbox/streets-v12",
-    satellite: "mapbox://styles/mapbox/satellite-streets-v12",
-    light: "mapbox://styles/mapbox/light-v11",
-    dark: "mapbox://styles/mapbox/dark-v11",
-  } as const;
 
   type MapStyleKey = keyof typeof MAP_STYLES;
 
@@ -34,7 +34,7 @@ export function useMapbox() {
     cardPosition: { x: 0, y: 0 },
     selectedResultIndex: -1,
     isLoadingEstimate: false,
-    mapStyle: "mapbox://styles/mapbox/streets-v12",
+    mapStyle: "mapbox://styles/mapbox/satellite-streets-v12",
   });
 
   // Initialize map

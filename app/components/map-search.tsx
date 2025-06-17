@@ -1,5 +1,5 @@
 "use client";
-import { useMapbox } from "@/hooks/useMapbox";
+import { MAP_STYLES, useMapbox } from "@/hooks/useMapbox";
 import { MapStyleDropdown } from "./map-style-dropdown";
 import { MapSearchInput } from "./map-search-input";
 import { MobileDrawer } from "./mobile-drawer";
@@ -22,7 +22,10 @@ export default function MapboxSearchMap() {
       {/* Map Container */}
       <div className='flex-1 relative'>
         <div ref={mapContainer} className='w-full h-full' />
-        <MapStyleDropdown onStyleChange={setMapStyle} />
+        <MapStyleDropdown
+          onStyleChange={setMapStyle}
+          activeStyle={state.mapStyle as keyof typeof MAP_STYLES}
+        />
 
         <MapSearchInput
           value={state.searchQuery}
