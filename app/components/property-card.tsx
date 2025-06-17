@@ -58,7 +58,7 @@ export function PropertyCard({
           <div className='flex items-start justify-between'>
             <div className='flex-1 pr-2'>
               <CardTitle className='text-base font-semibold text-gray-900 leading-tight'>
-                {address}
+                {address.split(",").slice(0, -1).join(",").trim()}
               </CardTitle>
             </div>
             <button
