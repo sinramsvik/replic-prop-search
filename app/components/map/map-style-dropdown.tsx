@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MAP_STYLES } from "@/hooks/useMapbox";
+import { MAP_STYLES } from "@/hooks/useMapboxSingle";
 
 const MenuItem = ({
   label,

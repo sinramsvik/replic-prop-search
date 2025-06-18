@@ -1,22 +1,21 @@
 "use client";
 
-import { MAP_STYLES, useMapbox } from "@/hooks/useMapboxSingle";
+import { MAP_STYLES, useMapboxSingleRich } from "@/hooks/useMapboxSingleRich";
 import { MapStyleDropdown } from "./map-style-dropdown";
 import { MapSearchInput } from "./map-search-input";
 import { MobileDrawer } from "./results/mobile-drawer";
-import { PropertyCard } from "./results/property-card";
+import { RightDrawer } from "./results/right-drawer";
 
-export default function MapboxSearchMap() {
+export default function MapboxSearchMapRich() {
   const {
     mapContainer,
-    propertyCardRef,
     state,
     setState,
     selectAddress,
     closePropertyCard,
     selectUnit,
     setMapStyle,
-  } = useMapbox();
+  } = useMapboxSingleRich();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!state.showResults || state.searchResults.length === 0) return;
@@ -74,29 +73,26 @@ export default function MapboxSearchMap() {
         />
         {state.selectedProperty && (
           <>
-            <div className='hidden md:block'>
-              <PropertyCard
-                address={state.selectedProperty.address}
-                isLoadingEstimate={state.isLoadingEstimate}
-                units={state.selectedProperty.units}
-                selectedUnit={state.selectedProperty.selectedUnit || null}
-                onClose={closePropertyCard}
-                onUnitSelect={selectUnit}
-                cardRef={propertyCardRef as React.RefObject<HTMLDivElement>}
-                position={state.cardPosition}
-              />
-            </div>
-            <div className='block md:hidden'>
-              <MobileDrawer
-                isOpen={!!state.selectedProperty}
-                onClose={closePropertyCard}
-                address={state.selectedProperty?.address || ""}
-                isLoadingEstimate={state.isLoadingEstimate}
-                units={state.selectedProperty?.units || []}
-                selectedUnit={state.selectedProperty?.selectedUnit || null}
-                onUnitSelect={selectUnit}
-              />
-            </div>
+            <MobileDrawer
+              isOpen={!!state.selectedProperty}
+              onClose={closePropertyCard}
+              address={state.selectedProperty.address}
+              isLoadingEstimate={state.isLoadingEstimate}
+              units={state.selectedProperty.units}
+              selectedUnit={state.selectedProperty.selectedUnit || null}
+              onUnitSelect={selectUnit}
+              additionalData={state.additionalData}
+            />
+            <RightDrawer
+              isOpen={!!state.selectedProperty}
+              onClose={closePropertyCard}
+              address={state.selectedProperty.address}
+              isLoadingEstimate={state.isLoadingEstimate}
+              units={state.selectedProperty.units}
+              selectedUnit={state.selectedProperty.selectedUnit || null}
+              onUnitSelect={selectUnit}
+              additionalData={state.additionalData}
+            />
           </>
         )}
       </div>
