@@ -21,6 +21,7 @@ interface PropertyCardProps {
   } | null;
   onClose: () => void;
   onUnitSelect: (unitId: string) => void;
+  onBack?: () => void;
   cardRef: React.RefObject<HTMLDivElement> | null;
   position: { x: number; y: number };
 }
@@ -32,6 +33,7 @@ export function PropertyCard({
   selectedUnit,
   onClose,
   onUnitSelect,
+  onBack,
   cardRef,
   position,
 }: PropertyCardProps) {
@@ -67,6 +69,7 @@ export function PropertyCard({
             selectedUnit={selectedUnit as PropertyInfo["selectedUnit"] | null}
             units={units}
             onUnitSelect={onUnitSelect}
+            onBack={onBack}
             isLoadingEstimate={isLoadingEstimate}
           />
         </CardContent>

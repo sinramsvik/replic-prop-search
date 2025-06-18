@@ -27,6 +27,7 @@ interface RightDrawerProps {
     unitPage?: string;
   } | null;
   onUnitSelect: (unitId: string) => void;
+  onBack?: () => void;
   additionalData?: AdditionalData;
 }
 
@@ -38,6 +39,7 @@ export function RightDrawer({
   units,
   selectedUnit,
   onUnitSelect,
+  onBack,
   additionalData,
 }: RightDrawerProps) {
   const [isDesktop, setIsDesktop] = useState(false);
@@ -68,6 +70,7 @@ export function RightDrawer({
             selectedUnit={selectedUnit as PropertyInfo["selectedUnit"] | null}
             units={units}
             onUnitSelect={onUnitSelect}
+            onBack={onBack}
             additionalData={additionalData}
             isLoadingEstimate={isLoadingEstimate}
           />

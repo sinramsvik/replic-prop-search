@@ -304,6 +304,18 @@ export function useMapbox() {
     }
   };
 
+  const clearSelectedUnit = () => {
+    setState((prev) => ({
+      ...prev,
+      selectedProperty: prev.selectedProperty
+        ? {
+            ...prev.selectedProperty,
+            selectedUnit: undefined,
+          }
+        : null,
+    }));
+  };
+
   return {
     mapContainer,
     propertyCardRef,
@@ -312,6 +324,7 @@ export function useMapbox() {
     selectAddress,
     closePropertyCard,
     selectUnit,
+    clearSelectedUnit,
     setMapStyle,
   };
 }

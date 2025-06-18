@@ -27,6 +27,7 @@ interface MobileDrawerProps {
     unitPage?: string;
   } | null;
   onUnitSelect: (unitId: string) => void;
+  onBack?: () => void;
   additionalData?: AdditionalData;
 }
 
@@ -38,6 +39,7 @@ export function MobileDrawer({
   units,
   selectedUnit,
   onUnitSelect,
+  onBack,
   additionalData,
 }: MobileDrawerProps) {
   const [isMobile, setIsMobile] = useState(false);
@@ -68,6 +70,7 @@ export function MobileDrawer({
             selectedUnit={selectedUnit as PropertyInfo["selectedUnit"] | null}
             units={units}
             onUnitSelect={onUnitSelect}
+            onBack={onBack}
             additionalData={additionalData}
             isLoadingEstimate={isLoadingEstimate}
           />

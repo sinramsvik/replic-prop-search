@@ -1,5 +1,5 @@
 import MapboxSearchMap from "@/app/components/map/map-search";
-import PageLayout from "@/components/page-layout";
+import PageLayout from "@/app/components/page-layout";
 
 export default function SingleAddressPage() {
   return (

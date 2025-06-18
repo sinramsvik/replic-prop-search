@@ -15,6 +15,7 @@ export default function MapboxSearchMap() {
     selectAddress,
     closePropertyCard,
     selectUnit,
+    clearSelectedUnit,
     setMapStyle,
   } = useMapbox();
 
@@ -82,6 +83,7 @@ export default function MapboxSearchMap() {
                 selectedUnit={state.selectedProperty.selectedUnit || null}
                 onClose={closePropertyCard}
                 onUnitSelect={selectUnit}
+                onBack={clearSelectedUnit}
                 cardRef={propertyCardRef as React.RefObject<HTMLDivElement>}
                 position={state.cardPosition}
               />
@@ -95,6 +97,7 @@ export default function MapboxSearchMap() {
                 units={state.selectedProperty?.units || []}
                 selectedUnit={state.selectedProperty?.selectedUnit || null}
                 onUnitSelect={selectUnit}
+                onBack={clearSelectedUnit}
               />
             </div>
           </>

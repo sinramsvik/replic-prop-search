@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { AdditionalData, HjemlaUnit, PropertyInfo } from "@/types";
+import { ArrowLeft } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 
@@ -62,7 +63,7 @@ export function UnitList({
         <button
           key={unit.id}
           onClick={() => onUnitSelect(unit.id)}
-          className='w-full p-3 text-left border rounded-lg hover:bg-gray-50 transition-colors'
+          className='w-full p-3 text-left border rounded-lg hover:bg-gray-50 cursor-pointer shadow-sm hover:shadow-md transition-all duration-200'
         >
           <div className='flex justify-between items-start'>
             <div>
@@ -139,6 +140,7 @@ export default function UnitContent({
   selectedUnit,
   units,
   onUnitSelect,
+  onBack,
   additionalData,
   isLoadingEstimate,
 }: {
@@ -146,6 +148,7 @@ export default function UnitContent({
   selectedUnit?: PropertyInfo["selectedUnit"] | null;
   units: HjemlaUnit[];
   onUnitSelect: (unitId: string) => void;
+  onBack?: () => void;
   additionalData?: AdditionalData | null;
 }) {
   return (
@@ -159,6 +162,19 @@ export default function UnitContent({
       ) : (
         selectedUnit && (
           <>
+            {units.length > 1 && onBack && (
+              <div className='mb-4'>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={onBack}
+                  className='flex items-center gap-2 text-gray-600 hover:text-gray-800 !p-0 h-auto'
+                >
+                  <ArrowLeft className='h-4 w-4' />
+                  Tilbake
+                </Button>
+              </div>
+            )}
             <UnitKeyData
               selectedUnit={selectedUnit as PropertyInfo["selectedUnit"]}
             />

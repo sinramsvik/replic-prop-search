@@ -14,6 +14,7 @@ export default function MapboxSearchMapRich() {
     selectAddress,
     closePropertyCard,
     selectUnit,
+    clearSelectedUnit,
     setMapStyle,
   } = useMapboxSingleRich();
 
@@ -81,6 +82,7 @@ export default function MapboxSearchMapRich() {
               units={state.selectedProperty.units}
               selectedUnit={state.selectedProperty.selectedUnit || null}
               onUnitSelect={selectUnit}
+              onBack={clearSelectedUnit}
               additionalData={state.additionalData}
             />
             <RightDrawer
@@ -91,6 +93,7 @@ export default function MapboxSearchMapRich() {
               units={state.selectedProperty.units}
               selectedUnit={state.selectedProperty.selectedUnit || null}
               onUnitSelect={selectUnit}
+              onBack={clearSelectedUnit}
               additionalData={state.additionalData}
             />
           </>

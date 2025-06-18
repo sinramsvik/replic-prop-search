@@ -375,6 +375,19 @@ export function useMapboxSingleRich() {
     }
   };
 
+  const clearSelectedUnit = () => {
+    setState((prev) => ({
+      ...prev,
+      selectedProperty: prev.selectedProperty
+        ? {
+            ...prev.selectedProperty,
+            selectedUnit: undefined,
+          }
+        : null,
+      additionalData: undefined,
+    }));
+  };
+
   return {
     mapContainer,
     propertyCardRef,
@@ -383,6 +396,7 @@ export function useMapboxSingleRich() {
     selectAddress,
     closePropertyCard,
     selectUnit,
+    clearSelectedUnit,
     setMapStyle,
   };
 }
