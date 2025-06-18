@@ -1,6 +1,6 @@
 "use client";
 
-import { MAP_STYLES, useMapbox } from "@/hooks/useMapboxSingle";
+import { MAP_STYLES, useSingleSearch } from "@/hooks/useSingleSearch";
 import { MapStyleDropdown } from "./map-style-dropdown";
 import { MapSearchInput } from "./map-search-input";
 import { MobileDrawer } from "./results/mobile-drawer";
@@ -17,7 +17,7 @@ export default function MapboxSearchMap() {
     selectUnit,
     clearSelectedUnit,
     setMapStyle,
-  } = useMapbox();
+  } = useSingleSearch();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!state.showResults || state.searchResults.length === 0) return;
@@ -86,6 +86,7 @@ export default function MapboxSearchMap() {
                 onBack={clearSelectedUnit}
                 cardRef={propertyCardRef as React.RefObject<HTMLDivElement>}
                 position={state.cardPosition}
+                isLoadingUnit={state.isLoadingUnit}
               />
             </div>
             <div className='block md:hidden'>

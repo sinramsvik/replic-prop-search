@@ -57,3 +57,23 @@ export interface AdditionalData {
   estimateWithUnitInfo?: HjemlaEstimateWithUnitInfo;
   comparableSales?: HjemlaComparableSalesResponse;
 }
+
+export interface ResultContent {
+  address: string;
+  isLoadingEstimate: boolean;
+  units: HjemlaUnit[];
+  selectedUnit: {
+    priceRange: {
+      min: number;
+      max: number;
+    };
+    pricePerSqm: number;
+    soldPrice: number;
+    commonDebt: number;
+    unitPage?: string;
+  } | null;
+  onUnitSelect: (unitId: string) => void;
+  onClose: () => void;
+  onBack?: () => void;
+  isLoadingUnit: boolean;
+}

@@ -55,7 +55,7 @@ export function MapSearchInput({
               onClick={() => onResultSelect(result)}
               className={`w-full px-4 py-3 text-left border-b border-gray-100 last:border-b-0 flex items-center space-x-3 transition-colors ${
                 index === selectedResultIndex
-                  ? "bg-blue-50 hover:bg-blue-100"
+                  ? "bg-gray-50 hover:bg-gray-300"
                   : "hover:bg-gray-50"
               }`}
             >

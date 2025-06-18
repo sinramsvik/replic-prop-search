@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import { AdditionalData, MapState, SearchResult } from "@/types";
+import { MapState, SearchResult } from "@/types";
 import { searchAddresses } from "@/app/single-address/actions";
 import {
   searchHjemlaAddress,
   getPropertyEstimate,
-  gethHjemlaUnitFeatures,
-  gethHjemlaEstimateWithUnitInfo,
-  getHjemlaComparableSales,
-} from "@/app/single-address-rich/actions";
+} from "@/app/single-address/actions";
 
 export const MAP_STYLES = {
   default: "mapbox://styles/mapbox/streets-v12",
@@ -17,12 +14,7 @@ export const MAP_STYLES = {
   dark: "mapbox://styles/mapbox/dark-v11",
 } as const;
 
-// Extended state interface to include additional data
-interface ExtendedMapState extends MapState {
-  additionalData?: AdditionalData;
-}
-
-export function useMapboxSingleRich() {
+export function useSingleSearch() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const propertyCardRef = useRef<HTMLDivElement>(null);
@@ -35,7 +27,7 @@ export function useMapboxSingleRich() {
     map.current?.setStyle(newStyle);
   };
 
-  const [state, setState] = useState<ExtendedMapState>({
+  const [state, setState] = useState<MapState>({
     searchQuery: "",
     searchResults: [],
     isSearching: false,
@@ -46,7 +38,6 @@ export function useMapboxSingleRich() {
     isLoadingEstimate: false,
     isLoadingUnit: false,
     mapStyle: "mapbox://styles/mapbox/satellite-streets-v12",
-    additionalData: undefined,
   });
 
   // Initialize map
@@ -156,39 +147,6 @@ export function useMapboxSingleRich() {
     }));
   };
 
-  // Enhanced function to fetch all additional data
-  const fetchAdditionalData = async (addressId: string) => {
-    try {
-      // First fetch unit features and estimate data in parallel
-      const [unitFeatures, estimateWithUnitInfo] = await Promise.all([
-        gethHjemlaUnitFeatures(addressId),
-        gethHjemlaEstimateWithUnitInfo(addressId),
-      ]);
-
-      // Then use the estimate data to fetch comparable sales
-      const comparableSales =
-        estimateWithUnitInfo?.internidadresse && estimateWithUnitInfo?.prom
-          ? await getHjemlaComparableSales(
-              estimateWithUnitInfo.internidadresse.toString(),
-              estimateWithUnitInfo.prom.toString()
-            )
-          : undefined;
-
-      return {
-        unitFeatures: unitFeatures || undefined,
-        estimateWithUnitInfo: estimateWithUnitInfo || undefined,
-        comparableSales: comparableSales || undefined,
-      };
-    } catch (error) {
-      console.error("Error fetching additional data:", error);
-      return {
-        unitFeatures: undefined,
-        estimateWithUnitInfo: undefined,
-        comparableSales: undefined,
-      };
-    }
-  };
-
   const selectAddress = async (result: SearchResult) => {
     if (!map.current) return;
 
@@ -215,7 +173,7 @@ export function useMapboxSingleRich() {
       const streetMatch = result.place_name.match(/^([^,]+)/);
       const streetAddress = streetMatch ? streetMatch[1] : result.place_name;
       const hjemlaSearchResult = await searchHjemlaAddress(streetAddress);
-      console.log({ streetMatch, streetAddress });
+
       if (
         !hjemlaSearchResult ||
         !Array.isArray(hjemlaSearchResult) ||
@@ -232,53 +190,49 @@ export function useMapboxSingleRich() {
         return;
       }
 
-      setTimeout(async () => {
+      setTimeout(() => {
         if (!map.current) return;
 
-        // If there's only one unit, automatically fetch its estimate and additional data
+        // If there's only one unit, automatically fetch its estimate
         if (hjemlaSearchResult.length === 1) {
-          const [estimateResult, additionalData] = await Promise.all([
-            getPropertyEstimate(hjemlaSearchResult[0].id),
-            fetchAdditionalData(hjemlaSearchResult[0].id),
-          ]);
-
-          if (estimateResult) {
-            setState((prev) => ({
-              ...prev,
-              selectedProperty: {
-                address: result.place_name
-                  .split(",")
-                  .slice(0, -1)
-                  .join(",")
-                  .trim(),
-                units: hjemlaSearchResult,
-                coordinates: [boundedLng, boundedLat],
-                selectedUnit: {
-                  price: `${estimateResult.price.toLocaleString("no-NO")} NOK`,
-                  priceRange: {
-                    min: estimateResult.min,
-                    max: estimateResult.max,
+          getPropertyEstimate(hjemlaSearchResult[0].id).then(
+            (estimateResult) => {
+              if (estimateResult) {
+                setState((prev) => ({
+                  ...prev,
+                  selectedProperty: {
+                    address: result.place_name
+                      .split(",")
+                      .slice(0, -1)
+                      .join(",")
+                      .trim(),
+                    units: hjemlaSearchResult,
+                    coordinates: [boundedLng, boundedLat],
+                    selectedUnit: {
+                      price: `${estimateResult.price.toLocaleString(
+                        "no-NO"
+                      )} NOK`,
+                      priceRange: {
+                        min: estimateResult.min,
+                        max: estimateResult.max,
+                      },
+                      soldPrice: estimateResult.sold_price,
+                      pricePerSqm: estimateResult.price_per_sqm,
+                      commonDebt: estimateResult.common_debt,
+                      certainty: estimateResult.certainty,
+                      indicator: estimateResult.indicator,
+                      unitPage: estimateResult.unit_page,
+                    },
                   },
-                  soldPrice: estimateResult.sold_price,
-                  pricePerSqm: estimateResult.price_per_sqm,
-                  commonDebt: estimateResult.common_debt,
-                  certainty: estimateResult.certainty,
-                  indicator: estimateResult.indicator,
-                  unitPage: estimateResult.unit_page,
-                },
-              },
-              additionalData,
-              showResults: false,
-              selectedResultIndex: -1,
-              isLoadingEstimate: false,
-            }));
-          }
-        } else {
-          // For multiple units, fetch additional data for the address
-          const additionalData = await fetchAdditionalData(
-            hjemlaSearchResult[0].id
+                  showResults: false,
+                  selectedResultIndex: -1,
+                  isLoadingEstimate: false,
+                }));
+              }
+            }
           );
-
+        } else {
+          // For multiple units, just show the list
           setState((prev) => ({
             ...prev,
             selectedProperty: {
@@ -286,7 +240,6 @@ export function useMapboxSingleRich() {
               units: hjemlaSearchResult,
               coordinates: [boundedLng, boundedLat],
             },
-            additionalData,
             showResults: false,
             selectedResultIndex: -1,
             isLoadingEstimate: false,
@@ -310,10 +263,7 @@ export function useMapboxSingleRich() {
     setState((prev) => ({ ...prev, isLoadingUnit: true }));
 
     try {
-      const [estimateResult, additionalData] = await Promise.all([
-        getPropertyEstimate(unitId),
-        fetchAdditionalData(unitId),
-      ]);
+      const estimateResult = await getPropertyEstimate(unitId);
 
       if (!estimateResult) {
         throw new Error("No estimate available");
@@ -339,7 +289,6 @@ export function useMapboxSingleRich() {
               },
             }
           : null,
-        additionalData,
         isLoadingUnit: false,
       }));
     } catch (error) {
@@ -348,12 +297,7 @@ export function useMapboxSingleRich() {
   };
 
   const closePropertyCard = () => {
-    setState((prev) => ({
-      ...prev,
-      selectedProperty: null,
-      additionalData: undefined,
-      searchQuery: "",
-    }));
+    setState((prev) => ({ ...prev, selectedProperty: null, searchQuery: "" }));
   };
 
   const clearSelectedUnit = () => {
@@ -365,7 +309,6 @@ export function useMapboxSingleRich() {
             selectedUnit: undefined,
           }
         : null,
-      additionalData: undefined,
     }));
   };
 

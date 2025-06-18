@@ -2,26 +2,10 @@
 
 import { X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { HjemlaUnit, PropertyInfo } from "@/types";
+import { PropertyInfo, ResultContent } from "@/types";
 import UnitContent from "./unit-content";
 
-interface PropertyCardProps {
-  address: string;
-  isLoadingEstimate: boolean;
-  units: HjemlaUnit[];
-  selectedUnit: {
-    priceRange: {
-      min: number;
-      max: number;
-    };
-    pricePerSqm: number;
-    soldPrice: number;
-    commonDebt: number;
-    unitPage?: string;
-  } | null;
-  onClose: () => void;
-  onUnitSelect: (unitId: string) => void;
-  onBack?: () => void;
+interface PropertyCardProps extends ResultContent {
   cardRef: React.RefObject<HTMLDivElement> | null;
   position: { x: number; y: number };
 }
@@ -36,6 +20,7 @@ export function PropertyCard({
   onBack,
   cardRef,
   position,
+  isLoadingUnit,
 }: PropertyCardProps) {
   return (
     <div
@@ -71,6 +56,7 @@ export function PropertyCard({
             onUnitSelect={onUnitSelect}
             onBack={onBack}
             isLoadingEstimate={isLoadingEstimate}
+            isLoadingUnit={isLoadingUnit}
           />
         </CardContent>
       </Card>

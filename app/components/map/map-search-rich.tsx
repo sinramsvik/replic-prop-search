@@ -1,6 +1,6 @@
 "use client";
 
-import { MAP_STYLES, useMapboxSingleRich } from "@/hooks/useMapboxSingleRich";
+import { MAP_STYLES, useSingleRichSearch } from "@/hooks/useSingleRichSearch";
 import { MapStyleDropdown } from "./map-style-dropdown";
 import { MapSearchInput } from "./map-search-input";
 import { MobileDrawer } from "./results/mobile-drawer";
@@ -16,7 +16,7 @@ export default function MapboxSearchMapRich() {
     selectUnit,
     clearSelectedUnit,
     setMapStyle,
-  } = useMapboxSingleRich();
+  } = useSingleRichSearch();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!state.showResults || state.searchResults.length === 0) return;

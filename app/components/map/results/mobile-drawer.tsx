@@ -8,28 +8,11 @@ import {
 } from "@/components/ui/drawer";
 import { useEffect, useState } from "react";
 import UnitContent from "./unit-content";
-import { AdditionalData, HjemlaUnit, PropertyInfo } from "@/types";
+import { AdditionalData, PropertyInfo, ResultContent } from "@/types";
 
-interface MobileDrawerProps {
+interface MobileDrawerProps extends ResultContent {
   isOpen: boolean;
-  onClose: () => void;
-  address: string;
-  isLoadingEstimate: boolean;
-  units: HjemlaUnit[];
-  selectedUnit: {
-    priceRange: {
-      min: number;
-      max: number;
-    };
-    pricePerSqm: number;
-    soldPrice: number;
-    commonDebt: number;
-    unitPage?: string;
-  } | null;
-  onUnitSelect: (unitId: string) => void;
-  onBack?: () => void;
   additionalData?: AdditionalData;
-  isLoadingUnit: boolean;
 }
 
 export function MobileDrawer({
