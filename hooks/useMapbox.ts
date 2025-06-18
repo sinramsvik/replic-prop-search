@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { MapState, SearchResult } from "@/types";
-import { searchAddresses } from "@/app/map/actions";
-import { searchHjemlaAddress, getPropertyEstimate } from "@/app/map/actions";
+import { searchAddresses } from "@/app/single-address/actions";
+import {
+  searchHjemlaAddress,
+  getPropertyEstimate,
+} from "@/app/single-address/actions";
 
 export const MAP_STYLES = {
   default: "mapbox://styles/mapbox/streets-v12",
@@ -50,8 +53,6 @@ export function useMapbox() {
       zoom: 10,
     });
 
-    //map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
-
     // Add bounds restriction after map loads
     map.current.on("load", () => {
       map.current?.setMaxBounds([
@@ -72,7 +73,7 @@ export function useMapbox() {
         map.current = null;
       }
     };
-  }, []);
+  }, [state.mapStyle]);
 
   // Map event listeners
   useEffect(() => {
@@ -193,21 +194,6 @@ export function useMapbox() {
       setTimeout(() => {
         if (!map.current) return;
 
-        const markerElement = document.createElement("div");
-        markerElement.className =
-          "w-8 h-8 bg-red-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center cursor-pointer hover:bg-red-600 transition-colors";
-
-        const innerDot = document.createElement("div");
-        innerDot.className = "w-3 h-3 bg-white rounded-full";
-        markerElement.appendChild(innerDot);
-
-        marker.current = new mapboxgl.Marker({
-          element: markerElement,
-          anchor: "center",
-        })
-          .setLngLat([boundedLng, boundedLat])
-          .addTo(map.current!);
-
         // If there's only one unit, automatically fetch its estimate
         if (hjemlaSearchResult.length === 1) {
           getPropertyEstimate(hjemlaSearchResult[0].id).then(
@@ -224,19 +210,19 @@ export function useMapbox() {
                     units: hjemlaSearchResult,
                     coordinates: [boundedLng, boundedLat],
                     selectedUnit: {
-                      price: `${estimateResult.estimate.price.toLocaleString(
+                      price: `${estimateResult.price.toLocaleString(
                         "no-NO"
                       )} NOK`,
                       priceRange: {
-                        min: estimateResult.estimate.min,
-                        max: estimateResult.estimate.max,
+                        min: estimateResult.min,
+                        max: estimateResult.max,
                       },
-                      soldPrice: estimateResult.estimate.sold_price,
-                      pricePerSqm: estimateResult.estimate.price_per_sqm,
-                      commonDebt: estimateResult.estimate.common_debt,
-                      certainty: estimateResult.estimate.certainty,
-                      indicator: estimateResult.estimate.indicator,
-                      unitPage: estimateResult.estimate.unit_page,
+                      soldPrice: estimateResult.sold_price,
+                      pricePerSqm: estimateResult.price_per_sqm,
+                      commonDebt: estimateResult.common_debt,
+                      certainty: estimateResult.certainty,
+                      indicator: estimateResult.indicator,
+                      unitPage: estimateResult.unit_page,
                     },
                   },
                   searchQuery: "",
@@ -290,19 +276,17 @@ export function useMapbox() {
           ? {
               ...prev.selectedProperty,
               selectedUnit: {
-                price: `${estimateResult.estimate.price.toLocaleString(
-                  "no-NO"
-                )} NOK`,
+                price: `${estimateResult.price.toLocaleString("no-NO")} NOK`,
                 priceRange: {
-                  min: estimateResult.estimate.min,
-                  max: estimateResult.estimate.max,
+                  min: estimateResult.min,
+                  max: estimateResult.max,
                 },
-                soldPrice: estimateResult.estimate.sold_price,
-                pricePerSqm: estimateResult.estimate.price_per_sqm,
-                commonDebt: estimateResult.estimate.common_debt,
-                certainty: estimateResult.estimate.certainty,
-                indicator: estimateResult.estimate.indicator,
-                unitPage: estimateResult.estimate.unit_page,
+                soldPrice: estimateResult.sold_price,
+                pricePerSqm: estimateResult.price_per_sqm,
+                commonDebt: estimateResult.common_debt,
+                certainty: estimateResult.certainty,
+                indicator: estimateResult.indicator,
+                unitPage: estimateResult.unit_page,
               },
             }
           : null,
