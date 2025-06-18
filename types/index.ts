@@ -1,3 +1,9 @@
+import {
+  HjemlaComparableSalesResponse,
+  HjemlaEstimateWithUnitInfo,
+  HjemlaUnitFeatures,
+} from "@/models";
+
 export interface PropertyInfo {
   address: string;
   units: HjemlaUnit[];
@@ -43,4 +49,10 @@ export interface HjemlaUnit {
   size: number;
   unit_type: string;
   verbose: string;
+}
+
+export interface AdditionalData {
+  unitFeatures?: HjemlaUnitFeatures;
+  estimateWithUnitInfo?: HjemlaEstimateWithUnitInfo;
+  comparableSales?: HjemlaComparableSalesResponse;
 }

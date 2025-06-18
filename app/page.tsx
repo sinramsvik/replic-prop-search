@@ -28,17 +28,17 @@ export default function Home() {
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6'>
           <LinkCard
-            href='/map'
+            href='/single-address'
             title='Søk enkeltadresse'
             description='Verdiestimat og solgtpris på enkeltadresse'
           />
           <LinkCard
-            href='/map'
-            title='Søk enkeltadresse - (coming soon)'
+            href='/single-address-rich'
+            title='Søk enkeltadresse (med rå data)'
             description='Alternativ layout med større mulighet for upsell'
           />
           <LinkCard
-            href='/map'
+            href='/single-address'
             title='Browse boligpriser - (coming soon)'
             description='Se boligpriser i et område'
           />
