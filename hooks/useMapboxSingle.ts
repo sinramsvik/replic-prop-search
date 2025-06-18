@@ -168,7 +168,11 @@ export function useMapbox() {
       essential: true,
     });
 
-    setState((prev) => ({ ...prev, isLoadingEstimate: true }));
+    setState((prev) => ({
+      ...prev,
+      isLoadingEstimate: true,
+      searchQuery: result.place_name.split(",").slice(0, -1).join(",").trim(),
+    }));
 
     try {
       const streetMatch = result.place_name.match(/^([^,]+)/);
@@ -225,7 +229,6 @@ export function useMapbox() {
                       unitPage: estimateResult.unit_page,
                     },
                   },
-                  searchQuery: "",
                   showResults: false,
                   selectedResultIndex: -1,
                   isLoadingEstimate: false,
@@ -242,7 +245,6 @@ export function useMapbox() {
               units: hjemlaSearchResult,
               coordinates: [boundedLng, boundedLat],
             },
-            searchQuery: "",
             showResults: false,
             selectedResultIndex: -1,
             isLoadingEstimate: false,
@@ -297,7 +299,7 @@ export function useMapbox() {
   };
 
   const closePropertyCard = () => {
-    setState((prev) => ({ ...prev, selectedProperty: null }));
+    setState((prev) => ({ ...prev, selectedProperty: null, searchQuery: "" }));
     if (marker.current) {
       marker.current.remove();
       marker.current = null;

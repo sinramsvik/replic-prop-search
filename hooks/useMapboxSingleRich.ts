@@ -210,7 +210,11 @@ export function useMapboxSingleRich() {
       essential: true,
     });
 
-    setState((prev) => ({ ...prev, isLoadingEstimate: true }));
+    setState((prev) => ({
+      ...prev,
+      isLoadingEstimate: true,
+      searchQuery: result.place_name.split(",").slice(0, -1).join(",").trim(),
+    }));
 
     try {
       const streetMatch = result.place_name.match(/^([^,]+)/);
@@ -285,7 +289,6 @@ export function useMapboxSingleRich() {
                 },
               },
               additionalData,
-              searchQuery: "",
               showResults: false,
               selectedResultIndex: -1,
               isLoadingEstimate: false,
@@ -305,7 +308,6 @@ export function useMapboxSingleRich() {
               coordinates: [boundedLng, boundedLat],
             },
             additionalData,
-            searchQuery: "",
             showResults: false,
             selectedResultIndex: -1,
             isLoadingEstimate: false,
@@ -368,6 +370,7 @@ export function useMapboxSingleRich() {
       ...prev,
       selectedProperty: null,
       additionalData: undefined,
+      searchQuery: "",
     }));
     if (marker.current) {
       marker.current.remove();
