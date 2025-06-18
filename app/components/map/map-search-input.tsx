@@ -1,4 +1,3 @@
-// app/components/map-search-input.tsx
 "use client";
 
 import { Search, MapPin } from "lucide-react";

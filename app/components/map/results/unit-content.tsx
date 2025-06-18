@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { AdditionalData, HjemlaUnit, PropertyInfo } from "@/types";
+import { AdditionalData, PropertyInfo } from "@/types";
 import { ArrowLeft } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import Spinner from "@/components/ui/spinner";
+import { HjemlaSearchResult } from "@/models";
 
 export function UnitKeyData({
   selectedUnit,
@@ -55,7 +56,7 @@ export function UnitList({
   units,
   onUnitSelect,
 }: {
-  units: HjemlaUnit[];
+  units: HjemlaSearchResult[];
   onUnitSelect: (unitId: string) => void;
 }) {
   return (
@@ -149,7 +150,7 @@ export default function UnitContent({
   isLoadingEstimate: boolean;
   isLoadingUnit: boolean;
   selectedUnit?: PropertyInfo["selectedUnit"] | null;
-  units: HjemlaUnit[];
+  units: HjemlaSearchResult[];
   onUnitSelect: (unitId: string) => void;
   onBack?: () => void;
   additionalData?: AdditionalData | null;

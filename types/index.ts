@@ -1,12 +1,13 @@
 import {
   HjemlaComparableSalesResponse,
   HjemlaEstimateWithUnitInfo,
+  HjemlaSearchResult,
   HjemlaUnitFeatures,
 } from "@/models";
 
 export interface PropertyInfo {
   address: string;
-  units: HjemlaUnit[];
+  units: HjemlaSearchResult[];
   selectedUnit?: {
     price: string;
     priceRange: {
@@ -42,16 +43,6 @@ export interface SearchResult {
   bbox?: [number, number, number, number];
 }
 
-export interface HjemlaUnit {
-  id: string;
-  display: string;
-  floor: number;
-  floor_code: string;
-  size: number;
-  unit_type: string;
-  verbose: string;
-}
-
 export interface AdditionalData {
   unitFeatures?: HjemlaUnitFeatures;
   estimateWithUnitInfo?: HjemlaEstimateWithUnitInfo;
@@ -61,7 +52,7 @@ export interface AdditionalData {
 export interface ResultContent {
   address: string;
   isLoadingEstimate: boolean;
-  units: HjemlaUnit[];
+  units: HjemlaSearchResult[];
   selectedUnit: {
     priceRange: {
       min: number;

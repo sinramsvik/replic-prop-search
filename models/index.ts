@@ -1,3 +1,42 @@
+export interface HjemlaSearchResult {
+  id: string;
+  type: string;
+  city: string;
+  lat: number;
+  lng: number;
+  verbose: string;
+  slug: string;
+  kommunenr: number;
+  municipality_name: string;
+  highlight: {
+    verbose: string[];
+  };
+  street_id: string;
+  street: string;
+  number: number;
+  letter: string;
+  postcode: string;
+  area_id: number | null;
+  area: string | null;
+  postal_area_name: string;
+  matrikkel: {
+    kommunenr: number;
+    gardsnr: number;
+    bruksnr: number;
+    festenr: number;
+  };
+  organisasjonsnr: number | null;
+  borettsandel: string;
+  unit_type: string;
+  floor_code: string;
+  floor: number;
+  size: number;
+  municipality_slug: string;
+  display: string;
+  street_slug: string;
+  postal_area_slug: string;
+}
+
 export interface HjemlaEstimate {
   price: number;
   sold_price: number;

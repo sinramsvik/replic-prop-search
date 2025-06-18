@@ -1,7 +1,7 @@
 "use server";
 
-import { HjemlaEstimate } from "@/models";
-import { HjemlaUnit, SearchResult } from "@/types";
+import { HjemlaEstimate, HjemlaSearchResult } from "@/models";
+import { SearchResult } from "@/types";
 import { normalizeString } from "@/lib/utils";
 
 //Mapbox search addresses
@@ -33,7 +33,7 @@ export async function searchAddresses(query: string): Promise<SearchResult[]> {
 
 export async function searchHjemlaAddress(
   query: string
-): Promise<HjemlaUnit[] | null> {
+): Promise<HjemlaSearchResult[] | null> {
   try {
     console.log(normalizeString(query));
     const response = await fetch(
