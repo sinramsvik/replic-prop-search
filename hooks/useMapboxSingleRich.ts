@@ -25,7 +25,6 @@ interface ExtendedMapState extends MapState {
 export function useMapboxSingleRich() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const marker = useRef<mapboxgl.Marker | null>(null);
   const propertyCardRef = useRef<HTMLDivElement>(null);
 
   type MapStyleKey = keyof typeof MAP_STYLES;
@@ -45,6 +44,7 @@ export function useMapboxSingleRich() {
     cardPosition: { x: 0, y: 0 },
     selectedResultIndex: -1,
     isLoadingEstimate: false,
+    isLoadingUnit: false,
     mapStyle: "mapbox://styles/mapbox/satellite-streets-v12",
     additionalData: undefined,
   });
@@ -198,11 +198,6 @@ export function useMapboxSingleRich() {
     const boundedLng = Math.max(4.5, Math.min(31.5, lng));
     const boundedLat = Math.max(57.5, Math.min(71.5, lat));
 
-    if (marker.current) {
-      marker.current.remove();
-      marker.current = null;
-    }
-
     map.current.flyTo({
       center: [boundedLng, boundedLat],
       zoom: 16,
@@ -239,22 +234,6 @@ export function useMapboxSingleRich() {
 
       setTimeout(async () => {
         if (!map.current) return;
-
-        // Create marker
-        const markerElement = document.createElement("div");
-        markerElement.className =
-          "w-8 h-8 bg-red-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center cursor-pointer hover:bg-red-600 transition-colors";
-
-        const innerDot = document.createElement("div");
-        innerDot.className = "w-3 h-3 bg-white rounded-full";
-        markerElement.appendChild(innerDot);
-
-        marker.current = new mapboxgl.Marker({
-          element: markerElement,
-          anchor: "center",
-        })
-          .setLngLat([boundedLng, boundedLat])
-          .addTo(map.current!);
 
         // If there's only one unit, automatically fetch its estimate and additional data
         if (hjemlaSearchResult.length === 1) {
@@ -328,6 +307,8 @@ export function useMapboxSingleRich() {
   };
 
   const selectUnit = async (unitId: string) => {
+    setState((prev) => ({ ...prev, isLoadingUnit: true }));
+
     try {
       const [estimateResult, additionalData] = await Promise.all([
         getPropertyEstimate(unitId),
@@ -359,6 +340,7 @@ export function useMapboxSingleRich() {
             }
           : null,
         additionalData,
+        isLoadingUnit: false,
       }));
     } catch (error) {
       console.error("Error fetching unit estimate:", error);
@@ -372,10 +354,6 @@ export function useMapboxSingleRich() {
       additionalData: undefined,
       searchQuery: "",
     }));
-    if (marker.current) {
-      marker.current.remove();
-      marker.current = null;
-    }
   };
 
   const clearSelectedUnit = () => {

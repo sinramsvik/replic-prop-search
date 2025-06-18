@@ -84,6 +84,7 @@ export default function MapboxSearchMapRich() {
               onUnitSelect={selectUnit}
               onBack={clearSelectedUnit}
               additionalData={state.additionalData}
+              isLoadingUnit={state.isLoadingUnit}
             />
             <RightDrawer
               isOpen={!!state.selectedProperty}
@@ -95,6 +96,7 @@ export default function MapboxSearchMapRich() {
               onUnitSelect={selectUnit}
               onBack={clearSelectedUnit}
               additionalData={state.additionalData}
+              isLoadingUnit={state.isLoadingUnit}
             />
           </>
         )}

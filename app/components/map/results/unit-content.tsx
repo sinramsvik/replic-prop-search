@@ -3,6 +3,7 @@ import { AdditionalData, HjemlaUnit, PropertyInfo } from "@/types";
 import { ArrowLeft } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import Spinner from "@/components/ui/spinner";
 
 export function UnitKeyData({
   selectedUnit,
@@ -143,8 +144,10 @@ export default function UnitContent({
   onBack,
   additionalData,
   isLoadingEstimate,
+  isLoadingUnit,
 }: {
   isLoadingEstimate: boolean;
+  isLoadingUnit: boolean;
   selectedUnit?: PropertyInfo["selectedUnit"] | null;
   units: HjemlaUnit[];
   onUnitSelect: (unitId: string) => void;
@@ -153,10 +156,8 @@ export default function UnitContent({
 }) {
   return (
     <div className='flex-1 overflow-y-auto'>
-      {isLoadingEstimate ? (
-        <div className='flex items-center justify-center py-8'>
-          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500'></div>
-        </div>
+      {isLoadingEstimate || isLoadingUnit ? (
+        <Spinner />
       ) : units.length > 1 && !selectedUnit ? (
         <UnitList units={units} onUnitSelect={onUnitSelect} />
       ) : (

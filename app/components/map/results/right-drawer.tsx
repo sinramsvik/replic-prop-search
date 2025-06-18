@@ -29,6 +29,7 @@ interface RightDrawerProps {
   onUnitSelect: (unitId: string) => void;
   onBack?: () => void;
   additionalData?: AdditionalData;
+  isLoadingUnit: boolean;
 }
 
 export function RightDrawer({
@@ -41,6 +42,7 @@ export function RightDrawer({
   onUnitSelect,
   onBack,
   additionalData,
+  isLoadingUnit,
 }: RightDrawerProps) {
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -73,6 +75,7 @@ export function RightDrawer({
             onBack={onBack}
             additionalData={additionalData}
             isLoadingEstimate={isLoadingEstimate}
+            isLoadingUnit={isLoadingUnit}
           />
         </div>
       </DrawerContent>

@@ -32,6 +32,7 @@ export interface MapState {
   cardPosition: { x: number; y: number };
   selectedResultIndex: number;
   isLoadingEstimate: boolean;
+  isLoadingUnit: boolean;
   mapStyle: string;
 }
 

@@ -17,7 +17,6 @@ export const MAP_STYLES = {
 export function useMapbox() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const marker = useRef<mapboxgl.Marker | null>(null);
   const propertyCardRef = useRef<HTMLDivElement>(null);
 
   type MapStyleKey = keyof typeof MAP_STYLES;
@@ -37,6 +36,7 @@ export function useMapbox() {
     cardPosition: { x: 0, y: 0 },
     selectedResultIndex: -1,
     isLoadingEstimate: false,
+    isLoadingUnit: false,
     mapStyle: "mapbox://styles/mapbox/satellite-streets-v12",
   });
 
@@ -156,11 +156,6 @@ export function useMapbox() {
     const boundedLng = Math.max(4.5, Math.min(31.5, lng));
     const boundedLat = Math.max(57.5, Math.min(71.5, lat));
 
-    if (marker.current) {
-      marker.current.remove();
-      marker.current = null;
-    }
-
     map.current.flyTo({
       center: [boundedLng, boundedLat],
       zoom: 16,
@@ -265,6 +260,8 @@ export function useMapbox() {
   };
 
   const selectUnit = async (unitId: string) => {
+    setState((prev) => ({ ...prev, isLoadingUnit: true }));
+
     try {
       const estimateResult = await getPropertyEstimate(unitId);
 
@@ -292,6 +289,7 @@ export function useMapbox() {
               },
             }
           : null,
+        isLoadingUnit: false,
       }));
     } catch (error) {
       console.error("Error fetching unit estimate:", error);
@@ -300,10 +298,6 @@ export function useMapbox() {
 
   const closePropertyCard = () => {
     setState((prev) => ({ ...prev, selectedProperty: null, searchQuery: "" }));
-    if (marker.current) {
-      marker.current.remove();
-      marker.current = null;
-    }
   };
 
   const clearSelectedUnit = () => {

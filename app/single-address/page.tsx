@@ -3,7 +3,7 @@ import PageLayout from "@/app/components/page-layout";
 
 export default function SingleAddressPage() {
   return (
-    <PageLayout pageTitle='Boligprisestimat POC - Enkeltadresse rik data'>
+    <PageLayout pageTitle='Boligprisestimat POC - Enkeltadresse'>
       <MapboxSearchMap />
     </PageLayout>
   );

@@ -98,6 +98,7 @@ export default function MapboxSearchMap() {
                 selectedUnit={state.selectedProperty?.selectedUnit || null}
                 onUnitSelect={selectUnit}
                 onBack={clearSelectedUnit}
+                isLoadingUnit={state.isLoadingUnit}
               />
             </div>
           </>

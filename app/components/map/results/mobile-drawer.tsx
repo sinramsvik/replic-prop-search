@@ -29,6 +29,7 @@ interface MobileDrawerProps {
   onUnitSelect: (unitId: string) => void;
   onBack?: () => void;
   additionalData?: AdditionalData;
+  isLoadingUnit: boolean;
 }
 
 export function MobileDrawer({
@@ -41,6 +42,7 @@ export function MobileDrawer({
   onUnitSelect,
   onBack,
   additionalData,
+  isLoadingUnit,
 }: MobileDrawerProps) {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -73,6 +75,7 @@ export function MobileDrawer({
             onBack={onBack}
             additionalData={additionalData}
             isLoadingEstimate={isLoadingEstimate}
+            isLoadingUnit={isLoadingUnit}
           />
         </div>
       </DrawerContent>
